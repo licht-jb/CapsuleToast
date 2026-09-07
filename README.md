@@ -2,7 +2,7 @@
 
 A small SwiftUI toast that appears at the top of your screen.
 
-CapsuleToast displays a capsule with an SF Symbol, a title, and a message. It drops in from above the screen with a quick spring animation. Tapping fades it out in place; swiping upward dismisses it upward. It stays visible until dismissed, replaced, or cleared by your app; there is no timer or queue.
+CapsuleToast displays a capsule with an SF Symbol, a title, and a message. It drops in from above the screen while fading in and returns above the screen while fading out, using the same spring timing. Tap or swipe upward to dismiss it. It stays visible until dismissed, replaced, or cleared by your app; there is no timer or queue.
 
 ## Requirements
 
@@ -11,7 +11,7 @@ CapsuleToast displays a capsule with an SF Symbol, a title, and a message. It dr
 - Swift 6 language mode
 - No external dependencies
 
-On iOS 26 and later the capsule uses Liquid Glass. On iOS 17–18 it uses a system material background. Reduce Motion replaces the entrance movement with a fade.
+On iOS 26 and later the capsule uses Liquid Glass. On iOS 17–18 it uses a system material background. Reduce Motion uses fades without entrance or exit movement.
 
 ## Usage
 

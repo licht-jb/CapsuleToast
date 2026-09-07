@@ -38,10 +38,8 @@ private struct CapsuleToastModifier: ViewModifier {
     }
 
     private var animation: Animation {
-        if reduceMotion { return .easeOut(duration: 0.15) }
-        return toast == nil
-            ? .easeOut(duration: 0.22)
-            : .spring(response: 0.30, dampingFraction: 0.82)
+        if reduceMotion { return .easeOut(duration: 0.225) }
+        return .spring(response: 0.45, dampingFraction: 0.82)
     }
 }
 
@@ -50,14 +48,12 @@ private struct CapsuleToastTransition: Transition {
 
     func body(content: Content, phase: TransitionPhase) -> some View {
         content.visualEffect { effect, geometry in
-            // Moving by the global bottom edge starts the entire capsule above the
-            // screen, including the gap occupied by the top safe area.
-            let offset = phase == .willAppear
-                ? -geometry.frame(in: .global).maxY
-                : 0
+            // Entrance and exit share the same offscreen position, including
+            // the gap occupied by the top safe area.
+            let offset = -geometry.frame(in: .global).maxY
             return effect
                 .offset(y: reduceMotion || phase.isIdentity ? 0 : offset)
-                .opacity(phase == .didDisappear || (reduceMotion && !phase.isIdentity) ? 0 : 1)
+                .opacity(phase.isIdentity ? 1 : 0)
         }
     }
 }

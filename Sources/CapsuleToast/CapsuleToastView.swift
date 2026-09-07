@@ -7,7 +7,6 @@ struct CapsuleToastView: View {
     let dismissNotification: () -> Void
 
     @State private var dragOffset: CGFloat = 0
-    @State private var isSwipingAway = false
 
     var body: some View {
         HStack(spacing: 10) {
@@ -33,19 +32,13 @@ struct CapsuleToastView: View {
         .modifier(CapsuleToastChrome())
         .contentShape(Capsule(style: .continuous))
         .shadow(color: .black.opacity(0.12), radius: 16, y: 8)
-        .visualEffect { [dragOffset, isSwipingAway, accessibilityReduceMotion] effect, geometry in
-            // Only a completed upward swipe adds exit movement; taps just fade out.
-            effect.offset(
-                y: min(dragOffset, 0)
-                    - (isSwipingAway && !accessibilityReduceMotion ? geometry.size.height : 0)
-            )
-        }
+        .offset(y: min(dragOffset, 0))
         // Once a drag begins, its release must not also count as a dismissing tap.
-        .gesture(dismissGesture.exclusively(before: TapGesture().onEnded { dismissAnimated() }))
+        .gesture(dismissGesture.exclusively(before: TapGesture().onEnded { dismissNotification() }))
         .accessibilityAddTraits(.isButton)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(toast.title), \(toast.message)")
-        .accessibilityAction(.default, dismissAnimated)
+        .accessibilityAction(.default, dismissNotification)
         .accessibilityHint(toast.accessibilityHint)
     }
 
@@ -57,20 +50,11 @@ struct CapsuleToastView: View {
             .onEnded { value in
                 // Ignore downward drags so scrolling toward the top does not dismiss the toast.
                 if value.translation.height < -36 || value.predictedEndTranslation.height < -72 {
-                    withAnimation(animation) {
-                        isSwipingAway = true
-                        dismissNotification()
-                    }
+                    dismissNotification()
                 } else {
                     resetDragOffset()
                 }
             }
-    }
-
-    private func dismissAnimated() {
-        withAnimation(animation) {
-            dismissNotification()
-        }
     }
 
     private func resetDragOffset() {
@@ -80,7 +64,7 @@ struct CapsuleToastView: View {
     }
 
     private var animation: Animation {
-        accessibilityReduceMotion ? .easeOut(duration: 0.15) : .easeOut(duration: 0.22)
+        accessibilityReduceMotion ? .easeOut(duration: 0.225) : .easeOut(duration: 0.33)
     }
 }
 
