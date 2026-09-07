@@ -1,0 +1,49 @@
+name: CapsuleToastDemo
+options:
+  deploymentTarget:
+    iOS: "17.0"
+packages:
+  CapsuleToast:
+    path: ..
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    GENERATE_INFOPLIST_FILE: YES
+targets:
+  CapsuleToastDemo:
+    type: application
+    platform: iOS
+    sources: [CapsuleToastDemo]
+    dependencies:
+      - package: CapsuleToast
+    settings:
+      base:
+        CODE_SIGN_IDENTITY: "Apple Development"
+        CODE_SIGN_STYLE: "Automatic"
+        DEVELOPMENT_TEAM: "77XDTPVZ5W"
+        INFOPLIST_KEY_UILaunchScreen_Generation: "YES"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks"
+        PRODUCT_BUNDLE_IDENTIFIER: "dev.crest.demo"
+        SDKROOT: "iphoneos"
+        TARGETED_DEVICE_FAMILY: "1,2"
+  CapsuleToastDemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [CapsuleToastDemoUITests]
+    dependencies:
+      - target: CapsuleToastDemo
+    settings:
+      base:
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @loader_path/Frameworks"
+        PRODUCT_BUNDLE_IDENTIFIER: "dev.crest.demo.uitests"
+        SDKROOT: "iphoneos"
+        TARGETED_DEVICE_FAMILY: "1,2"
+schemes:
+  CapsuleToastDemo:
+    build:
+      targets:
+        CapsuleToastDemo: all
+    test:
+      targets: [CapsuleToastDemoUITests]
